@@ -7,6 +7,8 @@ import "./CSS/util.css";
 //import './fonts';
 import { Redirect, useNavigate} from 'react-router-dom';
 import './javascript/main.js'
+import emailjs from 'emailjs-com';
+import ReactPlayer from 'react-player'
 
 
 import React, { Component} from "react";
@@ -17,10 +19,14 @@ class App extends Component{
       super(props)
       this.state={
         name:'',
-        email:''
+        email:'',
+        isOpen:false
       }
+      this.openModal = this.openModal.bind(this)
     }
-    
+    openModal () {
+      this.setState({isOpen: true})
+    }
     handleInputChange = (event) => {
      this.setState({
        name:event.target.value
@@ -41,19 +47,35 @@ class App extends Component{
       throw new Error(`Request failed: ${response.status}`); 
     }
   }
+  sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs.sendForm('service_qp2c6sf', 'template_vi4e02q', e.target, 'HEwP9do8BlgSF0nzH')
+      .then((result) => {
+          console.log(result.text);
+          console.log(e.target);
+      }, (error) => {
+          console.log(error.text);
+      });
+  };
+  changeDisplay=(e)=>{
+    setTimeout(() => {
+      document.getElementById("ytplayer").style.display="block";
+    }, 690);
+    
+  }
   onSubmit = async (event) => {
     event.preventDefault(); // Prevent default submission
     try {
       await this.saveFormData();
 	  
      
-      
+      this.sendEmail(event);
 	  console.log(this.state.name+""+this.state.email);
-    this.setState({
-      name: '', email: '' 
-    });
-    
-    useNavigate("/homepage",{replace:true},this.state);
+    event.target.reset();
+    this.changeDisplay();
+    //this.openModal();
+    //useNavigate("/homepage",{replace:true},this.state);
 	  //alert('Your registration was successfully submitted!');
 	
 //   this.props.App(this.state).then(
@@ -73,10 +95,21 @@ class App extends Component{
   render(){
   return (
     <div className="App">
+      <ReactPlayer
+  url="https://www.youtube.com/watch?v=xvFZjo5PgG0"
+  playing={true}
+  muted={true}
+  loop={true}
+  controls={true}
+  
+  id="ytplayer"
+/> 
       <div className="limiter">
         <div className="container-login100">
           <div className="wrap-login100 p-l-85 p-r-85 p-t-55 p-b-55">
-            <form className="login100-form validate-form flex-sb flex-w" onSubmit={this.onSubmit.bind(this)} method='POST'>
+          <span className="login100-form-title p-b-32" style={{color: "grey",font:"15px"}}>How accepting are people of those who are socially or politically different from themselves?<br/></span>
+          
+          <form className="login100-form validate-form flex-sb flex-w" onSubmit={this.onSubmit.bind(this)} method='POST'>
               <span className="login100-form-title p-b-32">Sign Up</span>
 
               <span className="txt1 p-b-11">nickname</span>
@@ -87,7 +120,7 @@ class App extends Component{
                 <input
 				 className="input100"
 				  type="text" 
-				  name="username"
+				  name="name"
 				  onChange={this.handleInputChange}
 				   required/>
                 <span className="focus-input100"></span>
@@ -126,6 +159,7 @@ class App extends Component{
                 <button className="login100-form-btn" type="submit" id="submit">Enter</button>
               </div>
             </form>
+            
           </div>
         </div>
       </div>

@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+#ytplayer{
+  position: absolute;
+  transform: translate(70%,50%);
+  z-index:1;
+  display: none;
+}
