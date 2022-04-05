@@ -8,7 +8,7 @@ import "./CSS/util.css";
 import { Redirect, useNavigate} from 'react-router-dom';
 import './javascript/main.js'
 import emailjs from 'emailjs-com';
-import ReactPlayer from 'react-player'
+import ReactPlayer from 'react-player';
 
 
 import React, { Component} from "react";
@@ -43,7 +43,7 @@ class App extends Component{
       //body: JSON.stringify(values)
 	  
     });
-    if (response.status !== 200) {
+    if (response.status !== 204) {
       throw new Error(`Request failed: ${response.status}`); 
     }
   }
@@ -61,13 +61,15 @@ class App extends Component{
   changeDisplay=(e)=>{
     setTimeout(() => {
       document.getElementById("ytplayer").style.display="block";
+      document.getElementById("ytplayer").scrollIntoView(true);
     }, 690);
+    
     
   }
   onSubmit = async (event) => {
     event.preventDefault(); // Prevent default submission
     try {
-      await this.saveFormData();
+      //await this.saveFormData();
 	  
      
       this.sendEmail(event);

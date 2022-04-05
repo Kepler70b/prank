@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import Homepage from './hompage';
 import reportWebVitals from './reportWebVitals';
+import './javascript/creds.js';
 
 ReactDOM.render(
   <React.StrictMode>
